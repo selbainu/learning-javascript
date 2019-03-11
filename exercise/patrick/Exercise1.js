@@ -1,22 +1,17 @@
 function map(array, callback, callbackContext) {
-  if(array == null) {
+  if(array == null || !array instanceof Array) {
     throw "Argument is not an array"
   }
-  else if(!array instanceof Array){
-    throw "Argument is not an array"
-  }
-  else if(typeof(callback) !== 'function'){
+
+  if(typeof(callback) !== 'function'){
     throw "Argument is not a function"
   }
-  else {
-    if(array.length == 0) return [];
-    const arr2 = [];
 
-    for(let i = 0; i < array.length; i++){
-      arr2.push(callback.call(callbackContext || this, array[i], i, array));
-    }
-    return arr2;
+  const arr2 = [];
+  for(let i = 0; i < array.length; i++){
+    arr2.push(callback.call(callbackContext || this, array[i], i, array));
   }
+  return arr2;
 }
 
 
