@@ -36,10 +36,10 @@ let Stack = {
   },
   push: function(element){
   	console.log("PUSHING");
-		this.arr.push(element);
+  	this.arr.push(element);
   },
   pop: function(element){
-  	console.log("POPPING");
+    console.log("POPPING");
     return this.arr.pop();
   }
 }
