@@ -1,4 +1,4 @@
-function map(array, callback) {
+function map(array, callback, callbackContext) {
   if(array == null) {
     throw "Argument is not an array"
   }
@@ -13,21 +13,47 @@ function map(array, callback) {
     const arr2 = [];
 
     for(let i = 0; i < array.length; i++){
-      arr2.push(callback.call(this, array[i], i, array));
+      arr2.push(callback.call(callbackContext || this, array[i], i, array));
     }
-    
     return arr2;
   }
 }
 
 
-let arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 let arr2 = map(arr1, function cubed(val, index, arr) {
   return val ** 3;
 });
-
 console.log(arr2);
 
+let arr3 = map(arr1, function symmetry(val, index, arr){
+	return val * arr[arr.length - index - 1];
+});
+console.log(arr3);
+
+
+let obj = {
+	name: "Patrick",
+ 	surnames: ["A", "B", "C", "D"],
+}
+
+obj.wrongGreetings = function(){
+  	return map(this.surnames, function(val) {
+			return "I am " + this.name + " " + val;   
+    });
+  }
+console.log(obj.wrongGreetings());
+
+
+obj.greetings = function() {
+		return map(this.surnames, function(val) {
+			return "I am " + this.name + " " + val;   
+    }, this);
+ }
+console.log(obj.greetings());
+
+console.log("=======");
 
 let Stack = {
   arr: [],
@@ -41,7 +67,7 @@ let Stack = {
   pop: function(element){
     console.log("POPPING");
     return this.arr.pop();
-  }
+  },
 }
 
 let stack = Object.create(Stack);
@@ -55,6 +81,8 @@ console.log(stack.get());
 console.log(stack.pop());
 console.log(stack.get());
 
+console.log("=======");
+
 let Queue = {
 	arr: [],
   get: function() {
@@ -62,7 +90,7 @@ let Queue = {
   },
   enqueue: function(element){
   	console.log("ENQUEUEING");
-		this.arr.push(element);  	
+		this.arr.push(element); 
   },
   dequeue: function(){
   	console.log("DEQUEUEING");
